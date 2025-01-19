@@ -7,6 +7,9 @@
 </script>
 
 <ModeWatcher />
+
 <LightSwitch />
+
+<a href="/">home</a>
 
 {@render children()}
