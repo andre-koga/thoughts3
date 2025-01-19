@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { fontFamily } from "tailwindcss/defaultTheme";
 import type { Config } from "tailwindcss";
 
@@ -59,6 +60,9 @@ const config: Config = {
 			}
 		}
 	},
+	plugins: [
+		require('@tailwindcss/typography'),
+	],
 };
 
 export default config;
