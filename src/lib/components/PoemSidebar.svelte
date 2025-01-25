@@ -1,7 +1,5 @@
 <script lang="ts">
 	let { bookWithPages, currentPoemId } = $props();
-	console.log('bookWithPages', bookWithPages);
-	console.log('currentPoemId', currentPoemId);
 
 	import * as Card from '$lib/components/ui/card';
 </script>

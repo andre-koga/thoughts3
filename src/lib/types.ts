@@ -17,6 +17,7 @@ export interface Book {
     title: string;
     slug: { current: string };
     image: ImageAsset;
+    colors: { hex: string }[];
     status?: string;
     preface?: Block[];
 }

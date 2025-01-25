@@ -1,23 +1,17 @@
 <script lang="ts">
-	import { Separator } from '$lib/components/ui/separator';
+	import { Asterisk, Badge, Blend, CircleDashed } from 'lucide-svelte';
 	import Breadcrumbs from './Breadcrumbs.svelte';
-	import LightSwitch from './LightSwitch.svelte';
 </script>
 
 <header
-	class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+	class="fixed bottom-8 left-1/2 z-50 w-full max-w-4xl -translate-x-1/2 rounded-full bg-black bg-opacity-60 text-white"
 >
-	<div class="container flex h-16 items-center justify-between">
-		<a href="/" class="flex items-center space-x-2">
-			<span class="text-3xl"> thoughts </span>
+	<div class="container flex h-16 items-center justify-between gap-3">
+		<a href="/" class="flex items-center gap-2">
+			<CircleDashed size={28} />
+			<span class="text-3xl">thoughts</span>
 		</a>
-
-		<div class="flex items-center space-x-4">
-			<LightSwitch />
-		</div>
-	</div>
-	<div class="container py-2">
+		<div class="flex-grow"></div>
 		<Breadcrumbs />
 	</div>
-	<Separator />
 </header>

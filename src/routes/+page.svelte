@@ -4,79 +4,13 @@
 	import * as HoverCard from '$lib/components/ui/hover-card';
 	import * as AspectRatio from '$lib/components/ui/aspect-ratio';
 	import type { Book } from '$lib/types';
-	import Header from '$lib/components/Header.svelte';
+	import GradientBackground from '$lib/components/GradientBackground.svelte';
 
 	let { data }: { data: { books: Book[] } } = $props();
-	let dominantColor = $state('rgba(255,255,255,0)');
-
-	// Function to get dominant color from image
-	async function getDominantColor(imageUrl: string): Promise<string> {
-		const img = new Image();
-		img.crossOrigin = 'Anonymous';
-
-		return new Promise<string>((resolve) => {
-			img.onload = () => {
-				const canvas = document.createElement('canvas');
-				const ctx = canvas.getContext('2d');
-				const sampleSize = 50; // Sample every Nth pixel for performance
-
-				canvas.width = img.width;
-				canvas.height = img.height;
-				ctx?.drawImage(img, 0, 0);
-
-				const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height).data;
-				if (!imageData) return resolve('rgba(255,255,255,0)');
-
-				// Store color frequencies
-				const colorMap = new Map<string, number>();
-
-				// Sample pixels and count color frequencies
-				for (let i = 0; i < imageData.length; i += 4 * sampleSize) {
-					const r = Math.floor(imageData[i] / 16) * 16; // Quantize to 16 levels
-					const g = Math.floor(imageData[i + 1] / 16) * 16;
-					const b = Math.floor(imageData[i + 2] / 16) * 16;
-
-					// Skip very dark or very light colors
-					if (r + g + b < 50 || r + g + b > 720) continue;
-
-					const key = `${r},${g},${b}`;
-					colorMap.set(key, (colorMap.get(key) || 0) + 1);
-				}
-
-				// Find the most frequent color
-				let maxFreq = 0;
-				let dominantRGB = [255, 255, 255];
-
-				colorMap.forEach((freq, color) => {
-					if (freq > maxFreq) {
-						maxFreq = freq;
-						dominantRGB = color.split(',').map(Number);
-					}
-				});
-
-				// Add a slight blur effect with multiple colors
-				const [r, g, b] = dominantRGB;
-				resolve(`rgba(${r},${g},${b},0.3)`);
-			};
-			img.src = imageUrl;
-		});
-	}
-
-	function handleHover(imageUrl: string) {
-		getDominantColor(imageUrl).then((color) => {
-			dominantColor = color;
-		});
-	}
-
-	function handleMouseLeave() {
-		dominantColor = 'rgba(255,255,255,0)';
-	}
+	let currentBook = $state<Book | null>(null);
 </script>
 
-<main
-	class="min-h-screen transition-all duration-500 ease-in-out"
-	style="background-color: {dominantColor}"
->
+<GradientBackground book={currentBook}>
 	<div class="container py-12">
 		<div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
 			{#each data.books as book}
@@ -84,8 +18,8 @@
 					<HoverCard.Trigger asChild>
 						<Card.Root
 							class="group overflow-hidden transition-all duration-300 hover:scale-105"
-							onmouseenter={() => handleHover(urlFor(book.image).url())}
-							onmouseleave={handleMouseLeave}
+							onmouseenter={() => (currentBook = book)}
+							onmouseleave={() => (currentBook = null)}
 						>
 							<a href={`/${book.slug.current}`} class="block">
 								<Card.Content class="p-0">
@@ -127,4 +61,4 @@
 			{/each}
 		</div>
 	</div>
-</main>
+</GradientBackground>
