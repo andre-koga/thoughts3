@@ -31,6 +31,8 @@
 	});
 </script>
 
+<!-- TODO: MAKE THE BG ANIMATE -->
+
 <main
 	class="min-h-screen"
 	style="background: linear-gradient(135deg, {color1.current}, {color2.current}, {color3.current})"

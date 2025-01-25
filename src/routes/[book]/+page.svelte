@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import GradientBackground from '$lib/components/GradientBackground.svelte';
 	import urlFor from '$lib/sanityImage';
 	import { PortableText } from '@portabletext/svelte';
 
 	let { data } = $props();
 </script>
 
-<main class="mx-auto max-w-4xl px-4 py-8">
+<GradientBackground book={data.book}>
 	<div class="flex flex-col gap-8 md:flex-row">
 		<div class="md:w-1/3">
 			<img
@@ -36,4 +37,4 @@
 			{/each}
 		</div>
 	</div>
-</main>
+</GradientBackground>

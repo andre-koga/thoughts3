@@ -28,7 +28,8 @@ export async function load({ params }) {
                 "pages": pages[]-> {
                     title,
                     slug
-                }
+                },
+                colors
             }`,
             { bookId: params.book }
         );
