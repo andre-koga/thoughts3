@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HTMLLiAttributes } from 'svelte/elements';
-	import { ChevronRight } from 'lucide-svelte';
+	import { ArrowRight } from 'lucide-svelte';
 	import { cn } from '$lib/utils.js';
 
 	type $$Props = HTMLLiAttributes & {
@@ -15,11 +15,11 @@
 <li
 	role="presentation"
 	aria-hidden="true"
-	class={cn('[&>svg]:size-3.5', className)}
+	class={cn('text-white [&>svg]:size-3.5', className)}
 	bind:this={el}
 	{...$$restProps}
 >
 	<slot>
-		<ChevronRight />
+		<ArrowRight size={16} />
 	</slot>
 </li>

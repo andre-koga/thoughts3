@@ -1,10 +1,10 @@
 import { createClient } from '@sanity/client';
-import { SANITY_PROJECT_ID, SANITY_DATASET } from '$env/static/private';
+import { PUBLIC_SANITY_DATASET, PUBLIC_SANITY_PROJECT_ID } from '$env/static/public';
 
 const client = createClient({
-    projectId: SANITY_PROJECT_ID,
-    dataset: SANITY_DATASET,
-    apiVersion: '2025-01-19', // use a UTC date string
+    projectId: PUBLIC_SANITY_PROJECT_ID,
+    dataset: PUBLIC_SANITY_DATASET,
+    apiVersion: '2025-01-27', // use a UTC date string
     useCdn: true, // `false` if you want to ensure fresh data
 });
 

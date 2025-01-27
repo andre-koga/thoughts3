@@ -57,6 +57,7 @@ const config: Config = {
 			},
 			fontFamily: {
 				serif: ["Libre Baskerville", ...fontFamily.serif],
+				type: ["Noto Serif", ...fontFamily.serif],
 				sans: [...fontFamily.sans],
 			}
 		}

@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { Tween } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
+	import noise from '$lib/assets/noise.svg';
 
-	let { children, book } = $props();
+	let { children, book, classNames } = $props();
 
 	let defaultColors = ['#717B70', '#F9C1E4', '#F99287'];
 
@@ -13,29 +14,78 @@
 		return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 	}
 
-	// Create tweened stores for each color component
-	const color1 = new Tween(defaultColors[0], { duration: 1000, easing: cubicOut });
-	const color2 = new Tween(defaultColors[1], { duration: 1000, easing: cubicOut });
-	const color3 = new Tween(defaultColors[2], { duration: 1000, easing: cubicOut });
+	let color1 = $state(defaultColors[0]);
+	let color2 = $state(defaultColors[1]);
+	let color3 = $state(defaultColors[2]);
+
+	let size1 = $state(50);
+	let size2 = $state(100);
+
+	// Animate sizes continuously
+	function animateSize() {
+		const time = Date.now() / 1000; // Convert to seconds
+		// Use sin to create smooth oscillation between 50 and 100
+		// Sin produces values between -1 and 1, so we:
+		// 1. Add 1 to get values 0 to 2
+		// 2. Multiply by 25 to get range of 50
+		// 3. Add 50 to center around 75
+		size1 = 70 + (Math.sin(time) + 1) * 35;
+		// Offset second circle by π/2 (90 degrees) to create alternating pattern
+		size2 = 70 + (Math.sin(time + Math.PI / 2) + 1) * 35;
+
+		// Request next animation frame
+		requestAnimationFrame(animateSize);
+	}
 
 	$effect(() => {
 		if (book?.colors) {
-			color1.target = hexToRgba(book.colors[0].hex, 0.8);
-			color2.target = hexToRgba(book.colors[1].hex, 0.8);
-			color3.target = hexToRgba(book.colors[2].hex, 0.8);
+			color1 = hexToRgba(book.colors[0].hex, 0.9);
+			color2 = hexToRgba(book.colors[1].hex, 0.9);
+			color3 = hexToRgba(book.colors[2].hex, 0.9);
 		} else {
-			color1.set(defaultColors[0]);
-			color2.set(defaultColors[1]);
-			color3.set(defaultColors[2]);
+			color1 = defaultColors[0];
+			color2 = defaultColors[1];
+			color3 = defaultColors[2];
 		}
+	});
+
+	// Start the animation when the component mounts
+	$effect.root(() => {
+		animateSize();
 	});
 </script>
 
-<!-- TODO: MAKE THE BG ANIMATE -->
-
 <main
-	class="min-h-screen"
-	style="background: linear-gradient(135deg, {color1.current}, {color2.current}, {color3.current})"
+	class="relative min-h-[100vh] overflow-hidden rounded-3xl border-2 border-orange-50 transition-all duration-1000 md:border-8 {classNames}"
+	style="background-color: {color3}"
 >
-	{@render children()}
+	<div
+		class="pointer-events-none fixed inset-0 left-0 top-0 z-10 h-screen w-screen mix-blend-overlay backdrop-blur-[100px]"
+		style="background-image: url({noise})"
+		aria-hidden="true"
+	></div>
+	<!-- Animated circles -->
+	<div
+		class="fixed left-0 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-1000"
+		style="
+			background-color: {color1};
+			width: {size1}vh;
+			height: {size1}vh;
+			opacity: 0.6;
+		"
+	></div>
+	<div
+		class="fixed right-0 top-[100vh] -translate-y-1/2 translate-x-1/2 rounded-full transition-all duration-1000"
+		style="
+			background-color: {color2};
+			width: {size2}vh;
+			height: {size2}vh;
+			opacity: 0.6;
+		"
+	></div>
+
+	<!-- Content -->
+	<div class="relative z-10">
+		{@render children()}
+	</div>
 </main>

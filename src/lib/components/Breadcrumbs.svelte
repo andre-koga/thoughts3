@@ -17,15 +17,23 @@
 <Breadcrumb.Root>
 	<Breadcrumb.List>
 		<Breadcrumb.Item>
-			<Breadcrumb.Link href="/">Home</Breadcrumb.Link>
+			<Breadcrumb.Link
+				class="rounded-full bg-black/20 px-2 py-0.5 text-white transition-all hover:scale-95"
+				href="/">Home</Breadcrumb.Link
+			>
 		</Breadcrumb.Item>
 		{#each segments as segment}
 			<Breadcrumb.Separator />
 			<Breadcrumb.Item>
 				{#if segment === segments[segments.length - 1]}
-					<Breadcrumb.Page>{segment.name}</Breadcrumb.Page>
+					<Breadcrumb.Page class="rounded-lg bg-black/50 px-2 py-0.5 text-white"
+						>{segment.name}</Breadcrumb.Page
+					>
 				{:else}
-					<Breadcrumb.Link href={segment.href}>{segment.name}</Breadcrumb.Link>
+					<Breadcrumb.Link
+						class="rounded-full bg-black/20 px-2 py-0.5 text-white transition-all hover:scale-95"
+						href={segment.href}>{segment.name}</Breadcrumb.Link
+					>
 				{/if}
 			</Breadcrumb.Item>
 		{/each}
