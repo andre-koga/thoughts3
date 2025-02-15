@@ -13,45 +13,35 @@
 	});
 </script>
 
-<div class="container space-y-12">
-	<Card.Root class="overflow-hidden">
-		<div class="flex flex-col gap-8 p-6 md:flex-row">
-			<div class="md:w-1/3">
-				<AspectRatio.Root ratio={3 / 4}>
-					<img
-						src={urlFor(data.book.image).width(400).url()}
-						alt="Book cover"
-						class="h-full w-full scale-105 object-cover blur-sm"
-					/>
-				</AspectRatio.Root>
-			</div>
-			<div class="md:w-2/3">
-				<Card.Header>
-					<Card.Title class="text-4xl">{data.book.title}</Card.Title>
-					{#if data.book.status}
-						<Card.Description class="text-lg">
-							<span
-								class="rounded-full bg-secondary/20 px-3 py-1 text-sm font-medium text-secondary-foreground"
-							>
-								{data.book.status}
-							</span>
-						</Card.Description>
-					{/if}
-				</Card.Header>
-				<Card.Content class="prose dark:prose-invert">
-					<PortableText value={data.book.preface} />
-				</Card.Content>
-			</div>
-		</div>
+<div class="container sm:grid sm:grid-cols-2 sm:gap-2">
+	<Card.Root class="overflow-hidden transition-all">
+		<Card.Content class="p-0">
+			<AspectRatio.Root ratio={1 / 1.414}>
+				<img
+					src={urlFor(data.book.image).width(600).url()}
+					alt={data.book.title}
+					class="h-full w-full scale-105 object-cover blur-[2px] brightness-75 saturate-150"
+				/>
+
+				<div class="absolute -bottom-4 -mx-12 h-[40%] w-[140%] overflow-hidden text-center">
+					<Card.Title
+						class="break-words text-5xl font-normal uppercase text-white mix-blend-exclusion"
+					>
+						{data.book.title.repeat(10)}
+					</Card.Title>
+				</div>
+				<div class=""></div>
+			</AspectRatio.Root>
+		</Card.Content>
 	</Card.Root>
 
-	<div class="space-y-6">
+	<div class="space-y-2">
 		<h2 class="text-2xl font-semibold">Poems</h2>
-		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+		<div class="flex flex-wrap gap-2">
 			{#each data.book.pages as poem}
-				<Card.Root class="transition-all hover:scale-[0.98]">
+				<Card.Root class="text-center transition-all hover:scale-[0.98]">
 					<a href={`${page.params.book}/${poem.slug.current}`}>
-						<Card.Header>
+						<Card.Header class="m-0 px-2 py-1.5">
 							<Card.Title>{poem.title}</Card.Title>
 						</Card.Header>
 					</a>
