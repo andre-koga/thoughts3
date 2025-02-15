@@ -3,10 +3,14 @@
 	import * as Card from '$lib/components/ui/card';
 	import * as HoverCard from '$lib/components/ui/hover-card';
 	import * as AspectRatio from '$lib/components/ui/aspect-ratio';
-	import type { Book } from '$lib/types';
+	import { currentBook } from '$lib/stores/book';
+	import type { Book } from '$lib/sanityTypes';
 
 	let { data }: { data: { books: Book[] } } = $props();
-	let currentBook = $state<Book | null>(null);
+
+	$effect(() => {
+		currentBook.set(null);
+	});
 </script>
 
 <div class="px-2 sm:container">
@@ -16,8 +20,8 @@
 				<HoverCard.Trigger asChild>
 					<Card.Root
 						class="overflow-hidden transition-all hover:scale-[0.98]"
-						onmouseenter={() => (currentBook = book)}
-						onmouseleave={() => (currentBook = null)}
+						onmouseenter={() => currentBook.set(book)}
+						onmouseleave={() => currentBook.set(null)}
 					>
 						<a href={`/${book.slug.current}`} class="block">
 							<Card.Content class="p-0">
@@ -25,41 +29,23 @@
 									<img
 										src={urlFor(book.image).width(600).url()}
 										alt={book.title}
-										class="h-full w-full scale-105 object-cover blur-[2px]"
+										class="h-full w-full scale-105 object-cover blur-[2px] brightness-75 saturate-150"
 									/>
-									<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-										<Card.Title class="font-normal text-white">
-											{book.title}
+									<div
+										class="absolute -bottom-4 -mx-12 h-[40%] w-[140%] overflow-hidden text-center"
+									>
+										<Card.Title
+											class="break-words text-4xl font-normal uppercase text-white mix-blend-exclusion"
+										>
+											{book.title.repeat(10)}
 										</Card.Title>
 									</div>
-									<div class="absolute right-2 top-2">
-										{#if book.status == 'finished'}
-											<Card.Description
-												class="rounded-full bg-white/20 px-2 py-0.5 text-center text-xs"
-												>finished
-											</Card.Description>
-										{:else if book.status == 'ongoing'}
-											<Card.Description
-												class="rounded-full bg-white/20 px-2 py-0.5 text-center text-xs"
-												>ongoing
-											</Card.Description>
-										{/if}
-									</div>
+									<div class=""></div>
 								</AspectRatio.Root>
 							</Card.Content>
 						</a>
 					</Card.Root>
 				</HoverCard.Trigger>
-				<HoverCard.Content class="w-80">
-					<div class="space-y-2">
-						<h4 class="text-sm font-semibold">{book.title}</h4>
-						{#if book.preface}
-							<p class="text-sm text-muted-foreground">
-								{book.preface[0].children[0].text}
-							</p>
-						{/if}
-					</div>
-				</HoverCard.Content>
 			</HoverCard.Root>
 		{/each}
 	</div>

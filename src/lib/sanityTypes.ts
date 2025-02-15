@@ -14,6 +14,7 @@ export type Book = {
     status: "finished" | "paused" | "ongoing";
     date: DatetimeDefinition;
     image: Image;
+    colors: string[];
     preface: PortableTextBlock[];
     pages: { title: string; slug: Slug }[];
 }
