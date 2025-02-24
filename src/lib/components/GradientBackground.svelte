@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Tween } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
-	import noise from '$lib/assets/noise.svg';
 
 	let { children, book, classNames } = $props();
 
@@ -61,7 +60,7 @@
 >
 	<div
 		class="pointer-events-none fixed inset-0 left-0 top-0 z-10 h-screen w-screen mix-blend-overlay backdrop-blur-[100px]"
-		style="background-image: url({noise})"
+		style="background-image: url('/noise.svg')"
 		aria-hidden="true"
 	></div>
 	<!-- Animated circles -->
